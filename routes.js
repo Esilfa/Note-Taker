@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 
+
 module.exports = app => {
 
     // Setup notes variable
@@ -12,12 +13,12 @@ module.exports = app => {
         var notes = JSON.parse(data);
 
 
-        // Setup the /api/notes get route
-        app.get('/', (req, res) => {
+        // Setup the api get route
+        app.get('/api/notes', (req, res) => {
             res.json(notes);
         });
-        app.post('/', (req, res) => {
-            // Receives a new note, adds it to db.json, then returns the new note
+        app.post('/api/notes', (req, res) => {
+            // Receives a new note
             let newNote = req.body;
             notes.push(newNote);
             updateDb();
@@ -27,7 +28,7 @@ module.exports = app => {
             res.json(notes[req.params.id]);
         });
 
-        // Deletes a note with specific id
+        // Deletes a note 
         app.delete('/api/notes/:id', (req, res) => {
             notes.splice(req.params.id,);
             updateDb();
@@ -45,11 +46,11 @@ module.exports = app => {
             fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
                 // if (err) throw err;
                 // return true;
-                newFunction(err);
+                updateDb(err);
                 return true;
             });
 
-            function newFunction(err) {
+            function updateDb(err) {
                 if (err)
                     throw err;
             }
