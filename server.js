@@ -1,5 +1,5 @@
 const express = require('express');
-// const api = require('./routes');
+const api = require('./routes');
 const path = require('path');
 
 // express 
@@ -13,12 +13,12 @@ const PORT = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // invoke public file 
-// app.use(express.static('public'));
-app.use(express.static(__dirname));
-// app.use('/api', api);
+app.use(express.static('public'));
+// app.use(express.static(__dirname));
+app.use('/', api);
 
 
-require('./routes')(app);
+// require('./routes')(app);
 
 // app.get('/', (req, res) =>
 //   res.sendFile(path.join(__dirname, '/public/index.html'))

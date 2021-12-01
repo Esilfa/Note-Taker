@@ -1,9 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
+const router = express.Router();
 
 
-
-module.exports = app => {
+// module.exports = router => {
 
     // Setup notes variable
     fs.readFile("db/db.json", (err, data) => {
@@ -14,33 +15,36 @@ module.exports = app => {
 
 
         // Setup the api get route
-        app.get('/api/notes', (req, res) => {
+        router.get('/api/notes', (req, res) => {
+            console.log(notes);
             res.json(notes);
         });
-        app.post('/api/notes', (req, res) => {
+        router.post('/api/notes', (req, res) => {
             // Receives a new note
             let newNote = req.body;
             notes.push(newNote);
             updateDb();
+            console.log(notes);
             return console.log("Added new note: " + newNote.title);
         });
-        app.get('/api/notes/:id', (req, res) => {
+        router.get('/api/notes/:id', (req, res) => {
+            console.log(notes);
             res.json(notes[req.params.id]);
         });
 
         // Deletes a note 
-        app.delete('/api/notes/:id', (req, res) => {
+        router.delete('/api/notes/:id', (req, res) => {
             notes.splice(req.params.id,);
             updateDb();
             console.log("Deleted note with id ");
         });
         // return the Note.html
-        app.get('/notes', (req, res) => {
-            res.sendFile(path.join(__dirname, '../public/notes.html'));
+        router.get('/notes', (req, res) => {
+            res.sendFile(path.join(__dirname, './public/notes.html'));
         });
         // return the `index.html` file
-        app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, '../public/index.html '));
+        router.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, './public/index.html '));
         });
         function updateDb() {
             fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
@@ -57,5 +61,5 @@ module.exports = app => {
         }
 
     });
-}
-// module.exports = app;
+
+module.exports = router;
